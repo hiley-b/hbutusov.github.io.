@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>hailey butusov | portfolio</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Outfit:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    * {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body {
+      font-family: 'Outfit', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    /* Hover Bracket Logic */
+    .emphasized-link .bracket {
+      opacity: 0;
+      transition: all 0.3s ease;
+      transform: translateX(0);
+      display: inline-block;
+    }
+    .emphasized-link:hover .bracket-left {
+      opacity: 1;
+      transform: translateX(-2px);
+    }
+    .emphasized-link:hover .bracket-right {
+      opacity: 1;
+      transform: translateX(2px);
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const Portfolio = () => {
+      const [currentPage, setCurrentPage] = useState('home');
+      const [darkMode, setDarkMode] = useState(false);
+      const [currentPhoto, setCurrentPhoto] = useState(0);
+      const [expandedClass, setExpandedClass] = useState(null);
+      const [expandedProject, setExpandedProject] = useState(null);
+      const [expandedExp, setExpandedExp] = useState(null);
+      const [expandedImage, setExpandedImage] = useState(null);
+      const [copiedText, setCopiedText] = useState(null);
+
+      const photos = [
+        { label: 'photo 1', src: 'formal.jpg', caption: 'lewis formal! saitta (left), me (middle), kathryn (right)' },
+        { label: 'photo 2', src: 'zb.jpg', caption: 'me at zach bryan concert' },
+        { label: 'photo 3', src: 'footballpic.jpg', caption: 'winter!' },
+        { label: 'photo 4', src: 'football.jpg', caption: 'saitta and i pre football game!' },
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setCurrentPhoto((prev) => (prev + 1) % photos.length);
+        }, 4000);
+        return () => clearInterval(timer);
+      }, []);
+
+      const theme = {
+        light: {
+          bg: '#fffbfc',
+          text: '#2d2d2d',
+          muted: '#7a7a7a',
+          accent: '#e8a0a0',
+          accentSoft: '#fdf0f0',
+          accentHover: '#d88888',
+          border: '#f5e1e1',
+          card: '#fff8f8',
+        },
+        dark: {
+          bg: '#1a1517',
+          text: '#f5f0f0',
+          muted: '#9a8a8a',
+          accent: '#e8a0a0',
+          accentSoft: '#2d2226',
+          accentHover: '#f0b8b8',
+          border: '#3a2d2d',
+          card: '#241e20',
+        }
+      };
+
+      const t = darkMode ? theme.dark : theme.light;
+
+      const favorites = {
+        foods: ['medium rare steak', 'daves hot chicken two slide combo with extra sauce, no coleslaw', 'acai bowl'],
+        shows: ['goodwill hunting', 'andor', 'bojack horseman'],
+        books: ['on earth we are briefly gorgeous', 'catcher in the rye', 'the great gatsby'],
+        songs: ['runaway - kanye west', 'love takes miles - cameron winter', 'tonight, tonight - the smashing pumpkins'],
+      };
+
+      const classes = [
+        { name: 'data structures', desc: 'efficient data organization and algorithmic design. focus on object-oriented programming, complexity analysis, and implementation of trees, graphs, stacks, and search algorithms.', skills: ['c', 'algorithm analysis', 'memory management'] },
+        { name: 'discrete mathematics', desc: 'foundations of logic and discrete systems. covers mathematical induction, set theory, and recurrence relations alongside graph theory, asymptotic analysis, and the structures of machine computation.', skills: ['proof writing', 'graph theory', 'computational complexity'] },
+        { name: 'fundamentals of computing', desc: 'programming foundations, algorithmic thinking, and computational problem solving.', skills: ['python', 'problem solving', 'algorithms'] },
+        { name: 'intro to electrical & computer engineering', desc: 'introductory circuit analysis and laboratory instrumentation. focus on electronic components, breadboarding techniques, and the application of electrical test equipment to analyze circuits and systems.', skills: ['circuit analysis', 'laboratory instrumentation', 'electrical prototyping'] },
+        { name: 'logic & processor design',desc:'digital system design from boolean logic to risc microprocessor implementation. focus on combinational and sequential logic, finite state machines, and processor datapath design using systemverilog for fpga synthesis.', skills: ['verilog', 'fpga', 'cpu architecture'] },
+        { name: 'signals & information systems', desc: 'analysis of information-carrying electrical signals and linear systems. covers signal theory, time and frequency-domain analysis, and the sampling theorem with applications in electronic transmission and reception.', skills: ['linear circuit theory', 'fourier transforms', 'signal processing'] },
+        { name: 'systems programming', desc: 'exploration of low-level computing and the unix programming environment. focus on memory management, system calls, concurrency, and networking to bridge the gap between high-level applications and the operating system.', skills: ['c', 'linux', 'memory management', 'shell scripting'] },
+      ];
+
+      const experiences = [
+        {
+          title: 'team lead — procter and gamble',
+          org: 'university of notre dame',
+          date: 'sep – dec 2025',
+          bullets: [
+            'led cross-disciplinary team of engineers and analysts across data ingestion, modeling, and insights delivery',
+            'designed nlp workflows including preprocessing, feature extraction, and modeling for 60,000+ customer reviews',
+            'guided technical decisions across tf-idf, lda, dependency parsing, and embedding-based clustering',
+            'synthesized model outputs into actionable recommendations for p&g stakeholders'
+          ],
+          presentationLink: 'https://docs.google.com/presentation/d/1LDw4LuKaXfVfcLfkkD2RH5lHJXtWexh1i5D3d62Udu0/edit?usp=sharing'
+        },
+        {
+          title: 'undergraduate researcher — vr & wireless networks',
+          org: 'university of notre dame',
+          date: 'aug – dec 2025',
+          bullets: [
+            'measured packet-level network traffic during vr gameplay using wireshark, identifying 3.3x packet frequency increase',
+            'processed and visualized network metrics using python, matplotlib, and plotly'
+          ]
+        },
+        {
+          title: 'csa intern — drone cybersecurity research',
+          org: 'university of notre dame (nasa-funded)',
+          date: 'may – jul 2025',
+          bullets: [
+            'researched enclave-protected key management for the safety aware drone ecosystem (sade)',
+            'implemented identity-based encryption key generation in python with socket programming',
+            'utilized intel sgx enclaves for trusted computation and secure access control',
+            'achieved ~10% latency overhead compared to non-sgx execution in benchmarking'
+          ],
+          images: [
+            { label: 'team photo', src: 'Mewithresearchposter.jpg' },
+            { label: 'research poster', src: 'research-poster.jpg' }
+          ]
+        }
+      ];
+
+      const projects = [
+        {
+          name: 'snake game in c',
+          tech: ['c', 'custom graphics', 'data structures'],
+          date: 'dec 2025',
+          desc: 'grid-based snake game featuring pointer-based data structures, dynamic movement, collision detection, and multiple visual modes with ui buttons.',
+          githubLink: 'https://github.com/hiley-b/Fund-Comp-Final-Project'
+        },
+        {
+          name: 'chicago school disparities analysis',
+          tech: ['python', 'pandas', 'plotly', 'matplotlib'],
+          date: 'apr – may 2025',
+          desc: 'analyzed 700+ schools across 77 communities. created 10+ interactive choropleth maps visualizing links between graduation rates, poverty, crime, and education outcomes.'
+        },
+        {
+          name: 'nd ai assistant',
+          tech: ['python', 'machine learning', 'nlp'],
+          date: 'aug 2024 – present',
+          desc: 'collaborating with oit to build a learning-based assistant for student information retrieval at notre dame.'
+        }
+      ];
+
+      const contactInfo = [
+        { label: 'email', value: 'hbutusov@nd.edu', icon: 'email', link: 'mailto:hbutusov@nd.edu' },
+        { label: 'linkedin', value: 'linkedin.com/in/haileybutusov', icon: 'linkedin', link: 'https://linkedin.com/in/haileybutusov' },
+        { label: 'github', value: 'github.com/hiley-b', icon: 'github', link: 'https://github.com/hiley-b' },
+      ];
+
+      const copyToClipboard = (text) => {
+        navigator.clipboard.writeText(text);
+        setCopiedText(text);
+        setTimeout(() => setCopiedText(null), 2000);
+      };
+
+      const nextPhoto = () => {
+        setCurrentPhoto((prev) => (prev + 1) % photos.length);
+      };
+
+      const prevPhoto = () => {
+        setCurrentPhoto((prev) => (prev - 1 + photos.length) % photos.length);
+      };
+
+      const BracketText = ({ children, size = 'lg', as: Tag = 'h2', className = '' }) => {
+        const sizes = {
+          xl: 'text-3xl sm:text-4xl md:text-5xl',
+          lg: 'text-xl sm:text-2xl md:text-3xl',
+          md: 'text-lg sm:text-xl',
+          sm: 'text-base sm:text-lg',
+        };
+        
+        return (
+          <Tag className={`group inline-flex items-center gap-1 sm:gap-2 font-light tracking-tight cursor-default ${sizes[size]} ${className}`} style={{ fontFamily: "'Cormorant Garamond', serif" }}>
+            <span 
+              className="opacity-0 group-hover:opacity-100 transition-all duration-300 -translate-x-2 group-hover:translate-x-0"
+              style={{ color: t.accent }}
+            >
+              [
+            </span>
+            <span className="transition-colors duration-300 lowercase">{children}</span>
+            <span 
+              className="opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0"
+              style={{ color: t.accent }}
+            >
+              ]
+            </span>
+          </Tag>
+        );
+      };
+
+      const PhotoCarousel = () => (
+        <div className="relative w-full max-w-xl mx-auto">
+          <div className="relative">
+            <button
+              onClick={prevPhoto}
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 hover:scale-110"
+              style={{ 
+                backgroundColor: `${t.bg}dd`,
+                border: `1px solid ${t.border}`,
+                color: t.accent
+              }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M15 18l-6-6 6-6"/>
+              </svg>
+            </button>
+
+            <button
+              onClick={nextPhoto}
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 hover:scale-110"
+              style={{ 
+                backgroundColor: `${t.bg}dd`,
+                border: `1px solid ${t.border}`,
+                color: t.accent
+              }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </button>
+
+            <div 
+              className="relative overflow-hidden rounded-lg"
+              style={{ 
+                aspectRatio: '16/10',
+                border: `1px solid ${t.border}`,
+              }}
+            >
+              {photos.map((photo, idx) => (
+                <div
+                  key={idx}
+                  className={`absolute inset-0 transition-all duration-700 ease-out flex items-center justify-center ${
+                    currentPhoto === idx ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                  } ${photo.src ? 'cursor-pointer' : ''}`}
+                  style={{ backgroundColor: t.card }}
+                  onClick={() => photo.src && setExpandedImage({ src: photo.src, alt: photo.label })}
+                >
+                  {photo.src ? (
+                    <img src={photo.src} alt={photo.label} className="w-full h-full object-cover hover:opacity-95 transition-opacity" />
+                  ) : (
+                    <div className="text-center p-6">
+                      <div 
+                        className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center"
+                        style={{ backgroundColor: t.accentSoft }}
+                      >
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={t.accent} strokeWidth="1.5">
+                          <rect x="3" y="3" width="18" height="18" rx="2"/>
+                          <circle cx="8.5" cy="8.5" r="1.5"/>
+                          <path d="M21 15l-5-5L5 21"/>
+                        </svg>
+                      </div>
+                      <p className="text-xs tracking-widest lowercase" style={{ color: t.muted }}>
+                        {photo.label}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-4 text-center min-h-[24px]">
+            <p className="text-sm italic lowercase" style={{ color: t.muted, fontFamily: "'Cormorant Garamond', serif", fontSize: '1rem' }}>
+              {photos[currentPhoto]?.caption}
+            </p>
+          </div>
+
+          <div className="flex justify-center gap-2 mt-3">
+            {photos.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentPhoto(idx)}
+                className="w-2 h-2 rounded-full transition-all duration-300"
+                style={{ 
+                  backgroundColor: currentPhoto === idx ? t.accent : t.border,
+                  transform: currentPhoto === idx ? 'scale(1.3)' : 'scale(1)'
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      );
+
+      const Dropdown = ({ title, children, isExpanded, onToggle, subtitle }) => (
+        <div 
+          className="border-b transition-colors duration-300"
+          style={{ borderColor: t.border }}
+        >
+          <button
+            onClick={onToggle}
+            className="w-full py-4 flex items-start justify-between text-left group"
+          >
+            <div className="flex-1">
+              <span className="font-light tracking-wide flex items-center gap-1 text-sm sm:text-base lowercase">
+                <span className="opacity-0 group-hover:opacity-100 transition-all duration-200" style={{ color: t.accent }}>[</span>
+                <span style={{ color: t.text }}>{title}</span>
+                <span className="opacity-0 group-hover:opacity-100 transition-all duration-200" style={{ color: t.accent }}>]</span>
+              </span>
+              {subtitle && (
+                <span className="block text-xs mt-1 lowercase" style={{ color: t.muted }}>{subtitle}</span>
+              )}
+            </div>
+            <span 
+              className="text-lg transition-transform duration-300 ml-4 mt-1"
+              style={{ 
+                transform: isExpanded ? 'rotate(45deg)' : 'rotate(0deg)',
+                color: t.accent
+              }}
+            >
+              +
+            </span>
+          </button>
+          <div 
+            className="overflow-hidden transition-all duration-500 ease-out"
+            style={{ 
+              maxHeight: isExpanded ? '500px' : '0',
+              opacity: isExpanded ? 1 : 0
+            }}
+          >
+            <div className="pb-4 pl-2 sm:pl-4 pr-4 text-sm leading-relaxed lowercase" style={{ color: t.muted }}>
+              {children}
+            </div>
+          </div>
+        </div>
+      );
+
+      const NavLink = ({ page, label }) => (
+        <button
+          onClick={() => setCurrentPage(page)}
+          className="group relative px-1 py-2 text-xs tracking-widest lowercase transition-colors duration-300"
+          style={{ color: currentPage === page ? t.text : t.muted }}
+        >
+          <span className="flex items-center gap-1">
+            <span 
+              className={`transition-all duration-200 ${currentPage === page ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+              style={{ color: t.accent }}
+            >
+              [
+            </span>
+            {label}
+            <span 
+              className={`transition-all duration-200 ${currentPage === page ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+              style={{ color: t.accent }}
+            >
+              ]
+            </span>
+          </span>
+        </button>
+      );
+
+      const ImageModal = ({ src, alt, onClose }) => (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ backgroundColor: 'rgba(0,0,0,0.9)' }}
+          onClick={onClose}
+        >
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300"
+            style={{ 
+              backgroundColor: 'rgba(255,255,255,0.1)',
+              color: '#fff'
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+          <img 
+            src={src} 
+            alt={alt} 
+            className="max-w-full max-h-[90vh] object-contain rounded-lg"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      );
+
+      const FavoritesCard = ({ title, items, icon }) => (
+        <div 
+          className="p-5 rounded-xl transition-all duration-300 hover:shadow-md"
+          style={{ 
+            backgroundColor: t.card,
+            border: `1px solid ${t.border}`
+          }}
+        >
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-lg">{icon}</span>
+            <h4 className="text-sm tracking-wider lowercase" style={{ color: t.accent, fontFamily: "'Cormorant Garamond', serif", fontSize: '1.1rem' }}>
+              {title}
+            </h4>
+          </div>
+          <ul className="space-y-2">
+            {items.map((item, i) => (
+              <li key={i} className="text-sm lowercase flex items-center gap-2" style={{ color: t.muted }}>
+                <span style={{ color: t.accent, fontSize: '8px' }}>✦</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+
+      const ContactCard = ({ label, value, icon, link }) => {
+        const isCopied = copiedText === value;
+        
+        const getIcon = () => {
+          switch(icon) {
+            case 'email':
+              return (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <rect x="2" y="4" width="20" height="16" rx="2"/>
+                  <path d="M22 6l-10 7L2 6"/>
+                </svg>
+              );
+            case 'linkedin':
+              return (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+              );
+            case 'github':
+              return (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+              );
+            default:
+              return null;
+          }
+        };
+
+        return (
+          <div 
+            className="group p-6 rounded-xl transition-all duration-300 cursor-pointer hover:shadow-md relative overflow-hidden"
+            style={{ 
+              backgroundColor: t.card,
+              border: `1px solid ${t.border}`
+            }}
+            onClick={() => copyToClipboard(value)}
+          >
+            <div 
+              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+              style={{ backgroundColor: `${t.accent}15` }}
+            >
+              <span className="text-sm lowercase tracking-wider" style={{ color: t.accent }}>
+                {isCopied ? '✓ copied!' : 'click to copy'}
+              </span>
+            </div>
+            
+            <div className="flex items-center gap-4">
+              <div 
+                className="w-12 h-12 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
+                style={{ backgroundColor: t.accentSoft, color: t.accent }}
+              >
+                {getIcon()}
+              </div>
+              <div>
+                <p className="text-xs lowercase tracking-wider mb-1" style={{ color: t.accent }}>{label}</p>
+                <p className="text-sm lowercase" style={{ color: t.text }}>{value}</p>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      const HomePage = () => (
+        <div className="space-y-16 sm:space-y-20">
+          <section className="min-h-[35vh] flex flex-col justify-center pt-8">
+            <div className="space-y-4 sm:space-y-5">
+              <p className="text-xs tracking-[0.3em] lowercase" style={{ color: t.accent }}>
+                hiiii, i'm
+              </p>
+              <BracketText size="xl" as="h1">hailey !</BracketText>
+              
+              <div 
+                className="mt-6 p-6 rounded-xl"
+                style={{ 
+                  backgroundColor: t.card,
+                  borderLeft: `3px solid ${t.accent}`
+                }}
+              >
+                <p className="leading-relaxed lowercase" style={{ color: t.muted, fontFamily: "'Cormorant Garamond', serif", fontSize: '1.1rem' }}>
+                  hello! i am a sophomore 
+                  <span className="emphasized-link inline-flex items-center mx-1 cursor-default">
+                    <span className="bracket bracket-left" style={{ color: t.accent }}>[</span>
+                    <strong className="mx-1" style={{ color: t.text, fontWeight: '400' }}>computer engineering</strong>
+                    <span className="bracket bracket-right" style={{ color: t.accent }}>]</span>
+                  </span>
+                  major at the 
+                  <span className="emphasized-link inline-flex items-center mx-1 cursor-default">
+                    <span className="bracket bracket-left" style={{ color: t.accent }}>[</span>
+                    <strong className="mx-1" style={{ color: t.text, fontWeight: '400' }}>university of notre dame</strong>
+                    <span className="bracket bracket-right" style={{ color: t.accent }}>]</span>
+                  </span>. 
+                  this summer i will be interning at 
+                  <span className="emphasized-link inline-flex items-center mx-1 cursor-default">
+                    <span className="bracket bracket-left" style={{ color: t.accent }}>[</span>
+                    <strong className="mx-1" style={{ color: t.text, fontWeight: '400' }}>procter and gamble</strong>
+                    <span className="bracket bracket-right" style={{ color: t.accent }}>]</span>
+                  </span> 
+                  as an incoming site digital IT management intern. ♡
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <BracketText size="md" as="h3">pics</BracketText>
+            <div className="mt-6 sm:mt-8">
+              <PhotoCarousel />
+            </div>
+          </section>
+
+          <section className="pb-8">
+            <BracketText size="md" as="h3">favs</BracketText>
+            <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <FavoritesCard 
+                title="foods" 
+                items={favorites.foods}
+                icon="🍜"
+              />
+              <FavoritesCard 
+                title="shows & movies" 
+                items={favorites.shows}
+                icon="🎬"
+              />
+              <FavoritesCard 
+                title="books" 
+                items={favorites.books}
+                icon="📖"
+              />
+              <FavoritesCard 
+                title="songs" 
+                items={favorites.songs}
+                icon="🎵"
+              />
+            </div>
+          </section>
+        </div>
+      );
+
+      const ProjectsPage = () => (
+        <div className="space-y-12 sm:space-y-16">
+          <section className="pt-8">
+            <BracketText size="xl" as="h1">projects</BracketText>
+            <p className="mt-4 text-sm lowercase" style={{ color: t.muted }}>
+              a selection of technical work and research
+            </p>
+          </section>
+
+          <section>
+            <BracketText size="md" as="h3">experience</BracketText>
+            <div className="mt-4 sm:mt-6">
+              {experiences.map((exp, idx) => (
+                <Dropdown
+                  key={idx}
+                  title={exp.title}
+                  subtitle={`${exp.org} · ${exp.date}`}
+                  isExpanded={expandedExp === idx}
+                  onToggle={() => setExpandedExp(expandedExp === idx ? null : idx)}
+                >
+                  <ul className="space-y-2">
+                    {exp.bullets.map((bullet, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <span style={{ color: t.accent, fontSize: '8px' }} className="mt-2">✦</span>
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  
+                  {exp.presentationLink && (
+                    <a 
+                      href={exp.presentationLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 mt-4 px-4 py-2 text-xs tracking-wider lowercase transition-all duration-300 rounded-full"
+                      style={{ 
+                        backgroundColor: t.accentSoft,
+                        color: t.accent
+                      }}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2"/>
+                        <line x1="8" y1="21" x2="16" y2="21"/>
+                        <line x1="12" y1="17" x2="12" y2="21"/>
+                      </svg>
+                      view presentation
+                    </a>
+                  )}
+                  
+                  {exp.images && (
+                    <div className="grid grid-cols-2 gap-4 mt-4">
+                      {exp.images.map((img, i) => (
+                        <div 
+                          key={i}
+                          className={`flex flex-col items-center justify-center overflow-hidden rounded-lg ${img.src ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''}`}
+                          style={{ 
+                            aspectRatio: '16/9',
+                            backgroundColor: t.card,
+                            border: `1px solid ${t.border}`
+                          }}
+                          onClick={() => img.src && setExpandedImage({ src: img.src, alt: img.label })}
+                        >
+                          {img.src ? (
+                            <img src={img.src} alt={img.label} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="flex flex-col items-center p-4">
+                              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={t.accent} strokeWidth="1.5" className="mb-2">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <circle cx="8.5" cy="8.5" r="1.5"/>
+                                <path d="M21 15l-5-5L5 21"/>
+                              </svg>
+                              <span className="text-xs lowercase" style={{ color: t.muted }}>{img.label}</span>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </Dropdown>
+              ))}
+            </div>
+          </section>
+
+          <section className="pb-8">
+            <BracketText size="md" as="h3">projects</BracketText>
+            <div className="mt-4 sm:mt-6">
+              {projects.map((proj, idx) => (
+                <Dropdown
+                  key={idx}
+                  title={proj.name}
+                  subtitle={proj.date}
+                  isExpanded={expandedProject === idx}
+                  onToggle={() => setExpandedProject(expandedProject === idx ? null : idx)}
+                >
+                  <p className="mb-3">{proj.desc}</p>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {proj.tech.map((techItem, i) => (
+                      <span 
+                        key={i}
+                        className="px-2 py-0.5 text-xs rounded-full"
+                        style={{ 
+                          backgroundColor: t.accentSoft,
+                          color: t.accent
+                        }}
+                      >
+                        {techItem}
+                      </span>
+                    ))}
+                  </div>
+                  
+                  {proj.githubLink && (
+                    <a 
+                      href={proj.githubLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 mt-2 px-4 py-2 text-xs tracking-wider lowercase transition-all duration-300 rounded-full"
+                      style={{ 
+                        backgroundColor: t.accentSoft,
+                        color: t.accent
+                      }}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                      </svg>
+                      view on github
+                    </a>
+                  )}
+                </Dropdown>
+              ))}
+            </div>
+          </section>
+        </div>
+      );
+
+      const CourseworkPage = () => (
+        <div className="space-y-12 sm:space-y-16">
+          <section className="pt-8">
+            <BracketText size="xl" as="h1">coursework</BracketText>
+            <p className="mt-4 text-sm lowercase" style={{ color: t.muted }}>
+              relevant classes i've taken
+            </p>
+          </section>
+
+          <section className="pb-8">
+            <div className="mt-4 sm:mt-6">
+              {classes.map((cls, idx) => (
+                <Dropdown
+                  key={idx}
+                  title={cls.name}
+                  isExpanded={expandedClass === idx}
+                  onToggle={() => setExpandedClass(expandedClass === idx ? null : idx)}
+                >
+                  <p className="mb-3">{cls.desc}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {cls.skills.map((skill, i) => (
+                      <span 
+                        key={i}
+                        className="px-2 py-0.5 text-xs rounded-full"
+                        style={{ 
+                          backgroundColor: t.accentSoft,
+                          color: t.accent
+                        }}
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </Dropdown>
+              ))}
+            </div>
+          </section>
+        </div>
+      );
+
+      const ContactPage = () => (
+        <div className="space-y-12 sm:space-y-16">
+          <section className="pt-8">
+            <BracketText size="xl" as="h1">contact me!</BracketText>
+            <p className="mt-4 text-sm lowercase" style={{ color: t.muted }}>
+              let's connect ♡
+            </p>
+          </section>
+
+          <section className="pb-8">
+            <div className="grid gap-4 max-w-md mx-auto">
+              {contactInfo.map((contact, idx) => (
+                <ContactCard 
+                  key={idx}
+                  label={contact.label}
+                  value={contact.value}
+                  icon={contact.icon}
+                  link={contact.link}
+                />
+              ))}
+            </div>
+            
+            <p className="text-center mt-8 text-sm lowercase" style={{ color: t.muted }}>
+              click any card to copy to clipboard!
+            </p>
+          </section>
+        </div>
+      );
+
+      const RecentPage = () => (
+        <div className="space-y-12 sm:space-y-16">
+          <section className="pt-8">
+            <BracketText size="xl" as="h1">recent</BracketText>
+            <p className="mt-4 text-sm lowercase" style={{ color: t.muted }}>
+              thoughts, reflections, and updates
+            </p>
+          </section>
+
+          <section className="pb-8 min-h-[40vh] flex flex-col items-center justify-center">
+            <div className="text-center">
+              <p className="text-2xl sm:text-3xl font-light tracking-wide lowercase" style={{ color: t.muted, fontFamily: "'Cormorant Garamond', serif" }}>
+                coming soon...
+              </p>
+              <p className="mt-4 text-sm lowercase" style={{ color: `${t.muted}80` }}>
+                check back for thoughts, reflections, and updates ♡
+              </p>
+            </div>
+          </section>
+        </div>
+      );
+
+      return (
+        <div 
+          className="min-h-screen transition-colors duration-500"
+          style={{ 
+            backgroundColor: t.bg,
+            color: t.text,
+            fontFamily: "'Outfit', sans-serif"
+          }}
+        >
+          <style>{`
+            ::selection {
+              background: ${t.accent}40;
+            }
+            ::-webkit-scrollbar {
+              width: 6px;
+            }
+            ::-webkit-scrollbar-track {
+              background: ${t.bg};
+            }
+            ::-webkit-scrollbar-thumb {
+              background: ${t.border};
+              border-radius: 3px;
+            }
+            ::-webkit-scrollbar-thumb:hover {
+              background: ${t.accent};
+            }
+          `}</style>
+
+          <nav 
+            className="fixed top-0 left-0 right-0 z-50 transition-colors duration-500"
+            style={{ 
+              backgroundColor: `${t.bg}ee`,
+              backdropFilter: 'blur(12px)',
+              borderBottom: `1px solid ${t.border}`
+            }}
+          >
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+              <button 
+                onClick={() => setCurrentPage('home')}
+                className="group text-sm sm:text-base font-light tracking-tight flex items-center gap-1 lowercase"
+                style={{ color: t.text, fontFamily: "'Cormorant Garamond', serif" }}
+              >
+                <span className="opacity-0 group-hover:opacity-100 transition-all duration-200" style={{ color: t.accent }}>[</span>
+                hb
+                <span className="opacity-0 group-hover:opacity-100 transition-all duration-200" style={{ color: t.accent }}>]</span>
+              </button>
+              
+              <div className="flex items-center gap-2 sm:gap-4">
+                <NavLink page="home" label="home" />
+                <NavLink page="projects" label="projects" />
+                <NavLink page="coursework" label="coursework" />
+                <NavLink page="contact" label="contact" />
+                <NavLink page="recent" label="recent" />
+                
+                <button
+                  onClick={() => setDarkMode(!darkMode)}
+                  className="ml-1 sm:ml-2 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300"
+                  style={{ 
+                    backgroundColor: t.card,
+                    border: `1px solid ${t.border}`
+                  }}
+                >
+                  {darkMode ? (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={t.accent} strokeWidth="1.5">
+                      <circle cx="12" cy="12" r="5"/>
+                      <line x1="12" y1="1" x2="12" y2="3"/>
+                      <line x1="12" y1="21" x2="12" y2="23"/>
+                      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                      <line x1="1" y1="12" x2="3" y2="12"/>
+                      <line x1="21" y1="12" x2="23" y2="12"/>
+                      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                    </svg>
+                  ) : (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={t.text} strokeWidth="1.5">
+                      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </div>
+          </nav>
+
+          <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-20 sm:pt-24">
+            {currentPage === 'home' && <HomePage />}
+            {currentPage === 'projects' && <ProjectsPage />}
+            {currentPage === 'coursework' && <CourseworkPage />}
+            {currentPage === 'contact' && <ContactPage />}
+            {currentPage === 'recent' && <RecentPage />}
+          </main>
+
+          <footer 
+            className="mt-16 sm:mt-20 py-6 sm:py-8 text-center text-xs tracking-wider lowercase"
+            style={{ 
+              borderTop: `1px solid ${t.border}`,
+              color: t.muted
+            }}
+          >
+            <p>© 2025 hailey butusov</p>
+            <p className="mt-1" style={{ color: t.accent }}>university of notre dame ♡</p>
+          </footer>
+
+          {expandedImage && (
+            <ImageModal 
+              src={expandedImage.src} 
+              alt={expandedImage.alt} 
+              onClose={() => setExpandedImage(null)} 
+            />
+          )}
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<Portfolio />);
+  </script>
+</body>
+</html>
